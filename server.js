@@ -458,7 +458,10 @@ app.get("/lookup", async (req, res) => {
   const { error, status, keyDoc } = await validateApiKey(apiKey, "number");
   if (error) return res.status(status).json({ error });
   try {
-    const response = await axios.get(process.env.UPSTREAM_API_URL + "?key=${process.env.LOOKUP_API_KEY}&type=number&number=" + encodeURIComponent(number), { timeout: 10000 });
+    const response = await axios.get(
+  `${process.env.UPSTREAM_API_URL}?key=${process.env.LOOKUP_API_KEY}&num=${encodeURIComponent(number)}`,
+  { timeout: 10000 }
+);
     await incrementUsage(keyDoc._id);
     const data = response.data;
     data.owner = "@aerivue";
